@@ -1,6 +1,7 @@
 package com.example.TaskFlow.service;
 
 import com.example.TaskFlow.dto.TaskRequest;
+import com.example.TaskFlow.dto.TaskResponse;
 import com.example.TaskFlow.exception.ResourceNotFoundException;
 import com.example.TaskFlow.model.Task;
 import com.example.TaskFlow.model.TaskStatus;
@@ -19,7 +20,7 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Task createTask(TaskRequest request) {
+    public TaskResponse createTask(TaskRequest request) {
         User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         Task task = new Task();
         task.setName(request.getName());
@@ -28,7 +29,17 @@ public class TaskService {
         task.setPriority(request.getTaskPriority());
         task.setUser(user);
         task.setStatus(TaskStatus.todo);
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        TaskResponse taskResponse = new TaskResponse();
+        taskResponse.setId(savedTask.getId());
+        taskResponse.setName(savedTask.getName());
+        taskResponse.setDescription(savedTask.getDescription());
+        taskResponse.setDueDate(savedTask.getDueDate());
+        taskResponse.setPriority(savedTask.getPriority());
+        taskResponse.setStatus(savedTask.getStatus());
+        taskResponse.setUserId(savedTask.getUser().getId());
+        return taskResponse;
     }
 
 }

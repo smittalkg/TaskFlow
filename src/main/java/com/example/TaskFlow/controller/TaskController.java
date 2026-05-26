@@ -1,7 +1,7 @@
 package com.example.TaskFlow.controller;
 
 import com.example.TaskFlow.dto.TaskRequest;
-import com.example.TaskFlow.model.Task;
+import com.example.TaskFlow.dto.TaskResponse;
 import com.example.TaskFlow.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,8 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping
-    private ResponseEntity<Task> addTask(@Valid @RequestBody TaskRequest request) {
-        Task saved = taskService.createTask(request);
+    private ResponseEntity<TaskResponse> addTask(@Valid @RequestBody TaskRequest request) {
+        TaskResponse saved = taskService.createTask(request);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
