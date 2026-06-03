@@ -8,17 +8,16 @@ import com.example.TaskFlow.model.TaskStatus;
 import com.example.TaskFlow.model.User;
 import com.example.TaskFlow.repository.TaskRepository;
 import com.example.TaskFlow.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class TaskService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
     public TaskResponse createTask(TaskRequest request) {
         User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
