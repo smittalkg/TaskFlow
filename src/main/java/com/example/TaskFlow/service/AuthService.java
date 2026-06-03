@@ -9,6 +9,7 @@ import com.example.TaskFlow.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public String registerUser(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already exist");
@@ -34,6 +36,7 @@ public class AuthService {
         return jwtService.generateToken(request.getEmail());
     }
 
+    @Transactional(readOnly = true)
     public String loginUser(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ResourceNotFoundException("Email id isn't used"));
         boolean isValid = passwordEncoder.matches(request.getPassword(), user.getPassword());

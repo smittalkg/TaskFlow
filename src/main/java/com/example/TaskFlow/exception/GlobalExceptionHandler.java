@@ -33,13 +33,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Map<String, String>> handleGenericErrors(Exception ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", "An unexpected error occurred");
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleGenericErrors(ResourceNotFoundException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", "Resource Not Found");
-        return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
 }

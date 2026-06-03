@@ -8,6 +8,7 @@ import com.example.TaskFlow.model.TaskStatus;
 import com.example.TaskFlow.model.User;
 import com.example.TaskFlow.repository.TaskRepository;
 import com.example.TaskFlow.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
+    @Transactional
     public TaskResponse createTask(TaskRequest request) {
         User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         Task task = new Task();
