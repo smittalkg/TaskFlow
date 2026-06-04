@@ -3,20 +3,19 @@ package com.example.TaskFlow.service;
 import com.example.TaskFlow.dto.TaskRequest;
 import com.example.TaskFlow.dto.TaskResponse;
 import com.example.TaskFlow.exception.ResourceNotFoundException;
+import com.example.TaskFlow.mapper.TaskMapper;
 import com.example.TaskFlow.model.Task;
 import com.example.TaskFlow.model.TaskPriority;
 import com.example.TaskFlow.model.TaskStatus;
 import com.example.TaskFlow.model.User;
 import com.example.TaskFlow.repository.TaskRepository;
 import com.example.TaskFlow.repository.UserRepository;
-import com.example.TaskFlow.service.TaskService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,6 +31,9 @@ class TaskServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private TaskMapper taskMapper;
 
     @InjectMocks
     private TaskService taskService;
@@ -67,13 +69,19 @@ class TaskServiceTest {
         task.setStatus(TaskStatus.todo);
         task.setUser(user);
 
+        TaskResponse expectedTaskResponse = new TaskResponse();
+        expectedTaskResponse.setId(1);
+        expectedTaskResponse.setName("Test");
+        expectedTaskResponse.setUserId(1);
+
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
         when(taskRepository.save(any(Task.class))).thenReturn(task);
+        when(taskMapper.taskToTaskResponse(task)).thenReturn(expectedTaskResponse);
 
         TaskResponse response = taskService.createTask(taskRequest);
 
-        assertThat(response.getId()).isEqualTo(1);
-        assertThat(response.getName()).isEqualTo("Test");
-        assertThat(response.getUserId()).isEqualTo(1);
+        assertThat(response.getId()).isEqualTo(expectedTaskResponse.getId());
+        assertThat(response.getName()).isEqualTo(expectedTaskResponse.getName());
+        assertThat(response.getUserId()).isEqualTo(expectedTaskResponse.getUserId());
     }
 }

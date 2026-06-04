@@ -1,2 +1,4 @@
+com/example/TaskFlow/mapper/TaskMapper.class
 com/example/TaskFlow/service/UserService.class
+com/example/TaskFlow/mapper/TaskMapperImpl.class
 com/example/TaskFlow/controller/UserController.class
